@@ -1,6 +1,13 @@
 frontend-nanodegree-arcade-game
 ===============================
 
-Students should use this rubric: https://www.udacity.com/course/viewer#!/c-ud015/l-3072058665/m-3072588797
+Objective of the game is to direct the player to the water at the top of the board without colliding with any enemies/bugs.
 
-for self-checking their submission.
+Positions will be reset if:
+	Player tries to move off screen.
+	Player collides with enemy.
+	Enemies completely cross the screen.
+
+Run game by launching index.html within any browser.
+
+
