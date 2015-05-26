@@ -10,4 +10,6 @@ Positions will be reset if:
 
 Run game by launching index.html within any browser.
 
-
+Citations:
+www.w3schools.com/js
+www.udacity.com
