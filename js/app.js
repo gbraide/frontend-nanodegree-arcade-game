@@ -3,21 +3,21 @@ var Enemy = function() {
     // The image/sprite for our enemies
     this.sprite = 'images/enemy-bug.png';
     
-    //starting positions for enemies  
+    // Starting positions for enemies  
     this.x = this.startX();
     this.y = this.startY();
     
-    //Random speed for enemy
+    // Random speed for enemy
     this.speed = Math.floor((Math.random() * 300) + 100);
 };
 
-//Random enemy start position(x)
+// Random enemy start position(x)
 Enemy.prototype.startX = function(){
 	var startX = -(Math.floor(Math.random()*500));
 	return startX;
 };
 
-//Random enemy start position(y)
+// Random enemy start position(y)
 Enemy.prototype.startY = function(){
 	var positions = [60, 145, 230];
 	var startY = positions[Math.floor(Math.random() * positions.length)];
@@ -31,14 +31,14 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 	
-	//Assign random speed to enemies and multiply by dt
+	// Assign random speed to enemies and multiply by dt
 	this.x += this.speed * dt;
 			
-	//When enemies go off screen restart positions
+	// When enemies go off screen restart positions
 	if(this.x > 550){
 		this.x = this.startX();
 		this.y = this.startY();
-	};
+	}
 };
 
 // Draw the enemy on the screen, required method for game
@@ -54,57 +54,63 @@ var Player = function(){
 	this.y = 400;//starting y position
 };
 
-//Update the Player's position
-Player.prototype.update = function(dt){
-	this.x*dt;
-	this.y*dt;	
+// Update the Player's position
+Player.prototype.update = function(){
 	
-	//Detect collision. Reset if collision detected
-	for(i in allEnemies){
+	// Detect collision. Reset if collision detected
+	for (i = 0; i < allEnemies.length; i++) { 
 		if(((allEnemies[i].x - player.x) < 70)  && ((allEnemies[i].y - player.y) < 70) && ((player.x - allEnemies[i].x) < 70) && ((player.y - allEnemies[i].y) < 70))
-			reset();		
-	};
+			player.reset();
+	}
 };
 
 // Draw the player on the screen, required method for game
 Player.prototype.render = function(){
-	ctx.drawImage(Resources.get(this.sprite), this.x, this.y)
+	ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-//Movement of player with the arrow keys
+// Movement of player with the arrow keys
 Player.prototype.handleInput = function(direction){
-	if(direction === 'left' && this.x > 0){
+	if(direction === 'left'){
 		this.x -= 100;
-	}else if (direction === 'up' && this.y > 60){
-		this.y -= 85;	
-	}else if (direction === 'right' && this.x < 400){
+		if(this.x < 0){
+			this.x = 0;
+		}		
+	}else if(direction === 'up' && this.y > 60){
+		this.y -= 85;
+	}else if(direction === 'right'){
 		this.x += 100;
-	}else if (direction === 'down' && this.y < 400){
+		if(this.x > 400){
+			this.x = 400;
+		}
+	}else if(direction === 'down'){
 		this.y += 85;
-	}else {
-		reset();//reset game when player reaches water
+		if(this.y > 400){
+			this.y = 400;
+		}
+	}else{
+		// Reset when player reaches water
+		player.reset();
 	}
 };
 
-//Place all enemy objects in an array called allEnemies
-  /*Define 3 enemies and insert them into an array*/
-	var enemy1 = new Enemy();
-	var enemy2 = new Enemy();
-	var enemy3 = new Enemy();
-	var allEnemies = [enemy1,enemy2,enemy3];
+// Reset player 
+Player.prototype.reset = function(){
+	this.x = 200;
+	this.y = 400;
+};
 
-//Place the player object in a variable called player
+// Place all enemy objects in an array called allEnemies
+// Define 3 enemies and insert them into an array
+	var enemy = 3; // Declare number of enemies
+	var allEnemies = [];
+	for(i=0; i < enemy; i++){
+		allEnemies.push(new Enemy()); // Add 3 enemy objects to array.
+	}
+
+// Place the player object in a variable called player
 var player = new Player();
 
-//Reset positions
-function reset(){
-	player.x = 200;
-	player.y = 400;
-	for(var i in allEnemies){
-		allEnemies[i].x = allEnemies[i].startX();
-		allEnemies[i].y = allEnemies[i].startY();
-	}
-};
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
